@@ -1,0 +1,204 @@
+/* MindMatch — Editorial / Organic theme
+   ----------------------------------------
+   A literary-journal feel for a personal-growth coaching service.
+   Display: Fraunces (variable serif, optical-size, soft contrast).
+   Body: DM Sans (geometric humanist).
+*/
+
+:root {
+  /* Palette */
+  --bg-paper: #f4efe6;
+  --bg-tint: #ece5d6;
+  --ink: #1f1b16;
+  --ink-soft: #4a4138;
+  --ink-mute: #80766a;
+  --saffron: #d67340;
+  --saffron-deep: #b85a26;
+  --sage: #6b7a65;
+  --sage-light: #c4cbb8;
+  --line: rgba(31, 27, 22, 0.14);
+  --line-strong: rgba(31, 27, 22, 0.28);
+
+  /* Typography */
+  --display: 'Fraunces', 'Times New Roman', serif;
+  --body: 'DM Sans', system-ui, sans-serif;
+
+  /* Motion */
+  --ease-quiet: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-decisive: cubic-bezier(0.65, 0, 0.35, 1);
+
+  color-scheme: light;
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { margin: 0; min-height: 100%; }
+
+body {
+  background: var(--bg-paper);
+  /* subtle paper grain via layered radial noise */
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(31, 27, 22, 0.025) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(214, 115, 64, 0.04) 0%, transparent 55%),
+    repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(31, 27, 22, 0.012) 2px, rgba(31, 27, 22, 0.012) 3px);
+  background-attachment: fixed;
+}
+
+#root {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+  min-height: 100vh;
+}
+
+/* — Typography — */
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 350;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 380;
+}
+
+h3 {
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 420;
+  font-variation-settings: 'opsz' 40, 'SOFT' 50;
+}
+
+.italic-script {
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  color: var(--saffron-deep);
+}
+
+.eyebrow {
+  font-family: var(--body);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  color: var(--ink-mute);
+}
+
+p { margin: 0 0 1em; }
+p.lede {
+  font-family: var(--display);
+  font-size: clamp(20px, 2.1vw, 26px);
+  font-weight: 350;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  font-variation-settings: 'opsz' 40, 'SOFT' 50;
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--saffron-deep); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+/* — Form elements — */
+
+button, .btn {
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg-paper);
+  cursor: pointer;
+  transition: transform 240ms var(--ease-quiet), background 240ms var(--ease-quiet), color 240ms var(--ease-quiet);
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  background: var(--saffron-deep);
+  border-color: var(--saffron-deep);
+}
+
+button.ghost, .btn.ghost {
+  background: transparent;
+  color: var(--ink);
+}
+button.ghost:hover, .btn.ghost:hover {
+  background: var(--ink);
+  color: var(--bg-paper);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+input, textarea, select {
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.45;
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  transition: border-color 200ms var(--ease-quiet), background 200ms var(--ease-quiet);
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--saffron-deep);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+/* — Page-load reveal animation — */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rise { animation: rise 700ms var(--ease-quiet) both; }
+.rise-1 { animation-delay: 60ms; }
+.rise-2 { animation-delay: 160ms; }
+.rise-3 { animation-delay: 260ms; }
+.rise-4 { animation-delay: 360ms; }
+.rise-5 { animation-delay: 480ms; }
+
+/* — Step transitions — */
+@keyframes slidein {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.step-enter { animation: slidein 420ms var(--ease-decisive) both; }
