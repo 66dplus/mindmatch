@@ -5,44 +5,37 @@
 2. Имя: `mindmatch`, регион: ближе к РФ (Frankfurt / Stockholm)
 3. Дождаться готовности (~2 мин)
 
-## 2. Применить схему
-1. SQL Editor → New query
-2. Вставить содержимое `migrations/001_init.sql`
-3. Run
+## 2. Применить схему и сиды
+Открыть SQL Editor и выполнить файлы в порядке:
+1. `migrations/0001_init.sql` — таблицы, индексы, триггер `mark_slot_taken`, RLS-политики
+2. `migrations/0002_seed.sql` — 3 услуги + ~30 свободных слотов на ближайшие 2 недели
 
-Это создаст таблицы `services`, `available_slots`, `bookings`, RLS-политики и засидирует 3 услуги + 20 свободных слотов на 5 рабочих дней.
+> Альтернатива через CLI: `supabase db push` после `supabase link`
 
 ## 3. Положить ключ OpenRouter
 Settings → Edge Functions → Secrets:
 ```
-OPENROUTER_API_KEY = sk-or-v1-...
-OPENROUTER_MODEL   = anthropic/claude-3.5-haiku   # опционально, иначе берётся этот
+OPENROUTER_API_KEY=sk-or-v1-...
 ```
+Модель `anthropic/claude-3.5-haiku` зашита в `functions/diagnostic/index.ts` — её можно поменять там же.
 
 ## 4. Развернуть edge-функцию
 ```bash
-# Один раз: установить supabase CLI
-brew install supabase/tap/supabase
-
-# Залогиниться
-supabase login
-
-# Связать проект (взять PROJECT_REF из URL дашборда)
-cd supabase
+brew install supabase/tap/supabase     # один раз
+supabase login                          # один раз
+cd mindmatch
 supabase link --project-ref <PROJECT_REF>
-
-# Деплой
 supabase functions deploy diagnostic --no-verify-jwt
 ```
 
-URL функции будет: `https://<PROJECT_REF>.supabase.co/functions/v1/diagnostic`
+URL функции: `https://<PROJECT_REF>.functions.supabase.co/diagnostic`
 
 ## 5. Подключить фронт
 В `mindmatch/.env.local` (создать рядом с `package.json`):
 ```
 VITE_SUPABASE_URL=https://<PROJECT_REF>.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJ...           # из Settings → API → anon public
-VITE_DIAGNOSTIC_FN_URL=https://<PROJECT_REF>.supabase.co/functions/v1/diagnostic
+VITE_DIAGNOSTIC_FN_URL=https://<PROJECT_REF>.functions.supabase.co/diagnostic
 ```
 
 Без этих переменных приложение работает на mock-данных — это полезно для локальной разработки и для случая, когда лимиты OpenRouter исчерпаны.
