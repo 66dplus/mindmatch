@@ -74,17 +74,29 @@
   padding-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 .hero-meta .row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: baseline;
   font-size: 14px;
+  line-height: 1.4;
   color: var(--ink-soft);
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line);
+}
+.hero-meta .row:last-child { border-bottom: none; padding-bottom: 0; }
+.hero-meta .row span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .hero-meta .row strong {
   font-weight: 500;
   color: var(--ink);
+  white-space: nowrap;
+  text-align: right;
 }
 
 .hero-ornament {

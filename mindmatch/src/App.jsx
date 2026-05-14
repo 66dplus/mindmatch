@@ -308,7 +308,7 @@ function ServiceStep({ services, chosen, onPick, onBack }) {
 function QualifyStep({ answers, onChange, onNext, onBack }) {
   const ready = QUESTIONS.every((q) => {
     const v = answers[q.id]
-    if (q.kind === 'text') return v && v.trim().length > 3
+    if (q.kind === 'text') return typeof v === 'string' && v.trim().length > 0
     if (q.kind === 'range') return v != null
     if (q.kind === 'pills') return Boolean(v)
     return false
