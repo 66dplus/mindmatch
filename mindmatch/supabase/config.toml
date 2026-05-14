@@ -1,0 +1,6 @@
+# Minimal config for `supabase functions deploy`.
+# The project ref is taken from the linked project; no project_id needed here.
+project_id = "mindmatch-local"
+
+[functions.diagnostic]
+verify_jwt = false
