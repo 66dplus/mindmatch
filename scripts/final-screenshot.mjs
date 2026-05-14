@@ -1,0 +1,35 @@
+import { chromium } from 'playwright'
+const browser = await chromium.launch()
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 1080 }, deviceScaleFactor: 2 })
+const page = await ctx.newPage()
+await page.goto('https://66dplus.github.io/mindmatch/', { waitUntil: 'networkidle' })
+await page.waitForTimeout(800)
+
+await page.getByRole('button', { name: /Записаться/i }).first().click()
+await page.waitForTimeout(800)
+await page.locator('.service-card').first().click()
+await page.waitForTimeout(600)
+
+const textareas = page.locator('.q-item textarea')
+await textareas.nth(0).fill('Чувствую, что застряла в работе — формально всё неплохо, но внутри ощущение, что иду не туда. Не могу решить, оставаться или искать новое.')
+await textareas.nth(1).fill('Пробовала составлять списки плюсов/минусов, общалась с друзьями. Помогает на день, потом возвращается.')
+await textareas.nth(2).fill('Хочу выйти с сессии с пониманием, как принимать такие решения в принципе.')
+await page.locator('.pill').nth(0).click()
+await page.waitForTimeout(400)
+
+await page.getByRole('button', { name: /Выбрать время/i }).click()
+await page.waitForTimeout(600)
+await page.locator('.slot-btn:not([disabled])').first().click()
+await page.waitForTimeout(400)
+
+await page.locator('input[type="text"]').fill('Анна Петрова')
+await page.locator('input[type="email"]').fill('anna+e2e@example.com')
+await page.waitForTimeout(300)
+
+await page.getByRole('button', { name: /Получить диагностику/i }).click()
+// Wait for the actual AI response (Gemini ~5-8s)
+await page.waitForSelector('.diagnostic h3', { timeout: 25000 })
+await page.waitForTimeout(800)
+await page.screenshot({ path: '/Users/dmitrijrybkin/Documents/Claude Code/skyeng-test/docs/screenshots/10-wizard-confirm.png', fullPage: true })
+console.log('captured real AI diagnostic')
+await browser.close()
