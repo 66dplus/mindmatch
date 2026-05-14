@@ -43,15 +43,10 @@ export async function saveBooking(payload) {
     console.info('[supabase mock] booking saved:', payload)
     return { id: `mock-${Date.now()}`, ...payload }
   }
-  const { data, error } = await supabase
-    .from('bookings')
-    .insert(payload)
-    .select()
-    .single()
+  const { error } = await supabase.from('bookings').insert(payload)
   if (error) throw new Error(`Не удалось сохранить запись: ${error.message}`)
-  // Also mark the slot taken (idempotent — RLS or triggers may also handle).
   if (payload.slot_id && !String(payload.slot_id).startsWith('fb-')) {
     await supabase.from('available_slots').update({ is_taken: true }).eq('id', payload.slot_id)
   }
-  return data
+  return { id: `booking-${Date.now()}`, ...payload }
 }
