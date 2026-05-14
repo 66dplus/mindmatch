@@ -306,13 +306,28 @@ function ServiceStep({ services, chosen, onPick, onBack }) {
 }
 
 function QualifyStep({ answers, onChange, onNext, onBack }) {
-  const ready = QUESTIONS.every((q) => {
+  const isFilled = (q) => {
     const v = answers[q.id]
     if (q.kind === 'text') return typeof v === 'string' && v.trim().length > 0
-    if (q.kind === 'range') return v != null
+    if (q.kind === 'range') return true // slider always shows a visible default value
     if (q.kind === 'pills') return Boolean(v)
     return false
-  })
+  }
+  const missing = QUESTIONS.filter((q) => !isFilled(q))
+  const [shake, setShake] = useState(null)
+
+  function handleNext() {
+    if (missing.length === 0) {
+      onNext()
+      return
+    }
+    const firstMissing = missing[0]
+    setShake(firstMissing.id)
+    const node = document.getElementById(`q-${firstMissing.id}`)
+    if (node) node.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    setTimeout(() => setShake(null), 800)
+  }
+
   return (
     <>
       <div className="wizard-header">
@@ -325,7 +340,11 @@ function QualifyStep({ answers, onChange, onNext, onBack }) {
 
       <div className="q-list">
         {QUESTIONS.map((q, i) => (
-          <div key={q.id} className="q-item">
+          <div
+            key={q.id}
+            id={`q-${q.id}`}
+            className={`q-item ${shake === q.id ? 'q-shake' : ''} ${!isFilled(q) && shake ? 'q-missing' : ''}`}
+          >
             <div className="q-label">
               <span className="num">{i + 1}.</span>
               <span className="q-text">{q.text}</span>
@@ -369,7 +388,14 @@ function QualifyStep({ answers, onChange, onNext, onBack }) {
 
       <div className="wizard-nav">
         <button className="back-link" onClick={onBack}>← Назад</button>
-        <button onClick={onNext} disabled={!ready}>Выбрать время →</button>
+        <div className="next-cluster">
+          {missing.length > 0 && (
+            <span className="next-hint">
+              осталось ответить: {missing.length} из {QUESTIONS.length}
+            </span>
+          )}
+          <button onClick={handleNext}>Выбрать время →</button>
+        </div>
       </div>
     </>
   )
