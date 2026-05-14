@@ -7,3 +7,4 @@ dist/
 .vite/
 .supabase/
 mindmatch/.env.local
+mindmatch/supabase/.temp/
