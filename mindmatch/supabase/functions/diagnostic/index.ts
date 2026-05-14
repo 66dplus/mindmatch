@@ -3,7 +3,7 @@
 //
 // Deploy:
 //   supabase functions deploy diagnostic --no-verify-jwt
-//   supabase secrets set OPENROUTER_API_KEY=sk-or-…
+//   supabase secrets set OPENROUTER_API=sk-or-…
 //
 // Invoke (from the SPA): POST /functions/v1/diagnostic
 //   body: { service, answers, clientName }
@@ -53,9 +53,9 @@ Deno.serve(async (req) => {
     return json({ error: 'Invalid JSON' }, 400)
   }
 
-  const apiKey = Deno.env.get('OPENROUTER_API_KEY')
+  const apiKey = Deno.env.get('OPENROUTER_API')
   if (!apiKey) {
-    return json({ error: 'OPENROUTER_API_KEY not configured on the server' }, 500)
+    return json({ error: 'OPENROUTER_API not configured on the server' }, 500)
   }
 
   const userPrompt = renderUserPrompt(body)
@@ -70,9 +70,9 @@ Deno.serve(async (req) => {
         'X-Title': 'MindMatch diagnostic',
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3.5-haiku',
+        model: 'google/gemini-2.5-flash',
         temperature: 0.4,
-        max_tokens: 800,
+        max_tokens: 1200,
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: userPrompt },
