@@ -59,8 +59,9 @@
 }
 
 .hero h1 {
-  font-size: clamp(56px, 8vw, 112px);
-  line-height: 0.95;
+  font-size: clamp(40px, 8vw, 112px);
+  line-height: 1;
+  overflow-wrap: break-word;
 }
 .hero h1 .accent {
   font-style: italic;

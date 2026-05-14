@@ -1,0 +1,27 @@
+{
+  "name": "skyeng-test",
+  "version": "1.0.0",
+  "description": "> Запись к коучу личностного роста с AI-диагностикой запроса. > Учебный кейс для тестового задания «автор курса по вайбкодингу» (Skyeng).",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/66dplus/mindmatch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/66dplus/mindmatch/issues"
+  },
+  "homepage": "https://github.com/66dplus/mindmatch#readme",
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}

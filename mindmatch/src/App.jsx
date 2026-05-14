@@ -30,7 +30,7 @@ export default function App() {
   const [slots, setSlots] = useState([])
   const [chosen, setChosen] = useState({
     service: null,
-    answers: {},
+    answers: { q4: 5 },
     slot: null,
     name: '',
     email: '',
@@ -101,7 +101,7 @@ export default function App() {
   }
 
   function reset() {
-    setChosen({ service: null, answers: {}, slot: null, name: '', email: '' })
+    setChosen({ service: null, answers: { q4: 5 }, slot: null, name: '', email: '' })
     setDiagnostic('')
     setErrMsg('')
     go(STEP.HERO)
